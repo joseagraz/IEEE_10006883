@@ -62,11 +62,11 @@ Figure 1. Image normalization work flow. 1) Compute all cohort images stain vect
 
    ```
    >>> Produce_Image_Stain_Vectors_and_Optical_Density.py
-         --Slide_Image					266290664.jpg
-   	  --Label_Map_Image				W19-1-1-D.01_23_LM_266290664.png
-   	  --Gray_Level_To_Label_Legend	LV_Gray_Level_to_Label.csv
-   	  --Output_Dataframe_File		Dataframe_266290664
-   	  --Excluding_Labels			""
+         --Slide_Image                  266290664.jpg
+   	  --Label_Map_Image            W19-1-1-D.01_23_LM_266290664.png
+   	  --Gray_Level_To_Label_Legend LV_Gray_Level_to_Label.csv
+   	  --Output_Dataframe_File      Dataframe_266290664
+   	  --Excluding_Labels           ""
    ```
 
    
