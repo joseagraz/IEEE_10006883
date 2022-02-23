@@ -55,7 +55,7 @@ Figure 1. Image normalization work flow. 1) Compute all cohort images stain vect
    | --Slide_Image [-s]                | Image of interest (jpg)                                      |
    | --Label_Map_Image [-l]            | Image map of image of interest (png)                         |
    | --Gray_Level_To_Label_Legend [-g] | Gray level color legend (csv file)                           |
-   | --Output_Dataframe_File [-o]      | Output Stain Vectors and Histogram pandas dataframe file name (parquet) |
+   | --Output_Dataframe_File [-o]      | Output Stain Vectors and Histogram pandas dataframe file name |
    | --Excluding_Labels [-x]           | Small or dubious labels in the label map image to ignore (text) |
 
    #### Usage
