@@ -20,7 +20,7 @@ Variation in materials, equipment, and staining protocols, make tissue slide sta
 
 ### How can technology help?
 
-The aggregation of a whole slide image (WSI) cohort subset is representative of an entire WSI cohort as a result of the law of large numbers theorem and shown as a power law distribution. This tool calculates the stain vectors and histogram for a given WSI cohort subset and normalizes a given WSI using Vahadane's structure-preserving color normalization algorithm
+The aggregation of a whole slide image (WSI) cohort subset is representative of an entire WSI cohort as a result of the law of large numbers theorem and shown as a power law distribution. This tool calculates the stain vectors and histogram for a given WSI cohort subset and uses this normalization parameters to normalize a given WSI using Vahadane's structure-preserving color normalization algorithm
 
 ## Installation
 
