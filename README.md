@@ -42,45 +42,80 @@ The project provides the following features:
 
 ## Getting started
 
-![klml](./images/Flow.png)
+![Normalization Work Flow](./images/Flow.png)
+
+Figure 1. Image normalization work flow. 1) Compute all cohort images stain vectors and optical densities. 2) Aggregate stain vectors and histograms for a give number of random images. 3) Use aggregated stain vectors and histogram to normalize all images in cohort. See provided [normalization example](./Normalization_Example) for a cohort of four images
+
+### Work-flow python scripts
 
 1. Compute stain vectors and pixel optical density for each of the images in the given WSI cohort using this [dataframes generator](./Python_Scripts/Produce_Image_Stain_Vectors_and_Optical_Density.py) python script. Note, calculated stain vectors and optical density will be stored in dataframes. See switch description below.
 
-   | Switch                       | Description                                                  |
-   | ---------------------------- | ------------------------------------------------------------ |
-   | --Slide_Image                | Image of interest (jpg)                                      |
-   | --Label_Map_Image            | Image map of image of interest (png)                         |
-   | --Gray_Level_To_Label_Legend | Gray level color legend (csv file)                           |
-   | --Output_Dataframe_File      | Output Stain Vectors and Histogram pandas dataframe file name (parquet) |
-   | --Excluding_Labels           | Small or dubious labels in the label map image to ignore (text) |
+   | Switch                            | Description                                                  |
+   | --------------------------------- | ------------------------------------------------------------ |
+   | --Slide_Image [-s]                | Image of interest (jpg)                                      |
+   | --Label_Map_Image [-l]            | Image map of image of interest (png)                         |
+   | --Gray_Level_To_Label_Legend [-g] | Gray level color legend (csv file)                           |
+   | --Output_Dataframe_File [-o]      | Output Stain Vectors and Histogram pandas dataframe file name (parquet) |
+   | --Excluding_Labels [-x]           | Small or dubious labels in the label map image to ignore (text) |
+
+   #### Usage
+
+   ```
+   >>> Produce_Image_Stain_Vectors_and_Optical_Density.py
+         --Slide_Image                266290664.jpg
+   	  --Label_Map_Image            W19-1-1-D.01_23_LM_266290664.png
+   	  --Gray_Level_To_Label_Legend LV_Gray_Level_to_Label.csv
+   	  --Output_Dataframe_File      Dataframe_266290664
+   	  --Excluding_Labels           ""
+   ```
 
    
 
 2. Compute normalizing stain vectors and histogram aggregates using python [Aggregate_Stain_Vectors_and_Histograms](/Python_Scripts/Aggregate_Stain_Vectors_and_Histograms.py) script. See switch description below.
 
-   | Switch                             | Description                                             |
-   | ---------------------------------- | ------------------------------------------------------- |
-   | --Histogram_Dataframe_Directory    | Sum and normalized to 10,000 count histogram  (parquet) |
-   | --Stain_Vector_Dataframe_Directory | Percent Area Stain Vector (parquet)                     |
-   | --Output_Directory                 | Aggregated histogram and stain vectors  (parquet)       |
-   | --Number_of_Images                 | Number of random images                                 |
+   | Switch                                  | Description                                                  |
+   | --------------------------------------- | ------------------------------------------------------------ |
+   | --Histogram_Dataframe_Directory [-m]    | Sum and normalized to 10,000 count histogram  (parquet files) directory |
+   | --Stain_Vector_Dataframe_Directory [-s] | Percent Area Stain Vector (parquet files) directory          |
+   | --Output_Directory [-o]                 | Aggregated histogram and stain vectors  (parquet files) directory |
+   | --Number_of_Images [-i]                 | Number of random images                                      |
 
-   ​                              
+   #### Usage
+
+   ```
+   >>> Aggregate_Stain_Vectors_and_Histograms.py
+        --Histogram_Dataframe_Directory     Histogram_Dataframes
+        --Stain_Vector_Dataframe_Directory  Stain_Vectors_Dataframes
+        --Output_Directory                  Normalization_Parameters_Directory
+        --Number_of_Images                  1864
+   ```
+
+   ​       
 
 3. Normalize image using normalizing stain vectors and histogram aggregates utilizing python [Normalize_Image](/Python_Scripts/Normalize_Image.py) script. See switch description below.
 
-   | Switch                      | Description                        |
-   | --------------------------- | ---------------------------------- |
-   | --Image_To_Normalize        | Image of interest (jpg)            |
-   | --Normalizing_Histogram     | Normalizing Histogram (numpy)      |
-   | --Normalizing_Stain_Vectors | Normalizing Stain Vector (numpy)   |
-   | --Output_Directory          | Normalized Image of interest (png) |
+   | Switch                           | Description                        |
+   | -------------------------------- | ---------------------------------- |
+   | --Image_To_Normalize [-i]        | Image of interest (jpg)            |
+   | --Normalizing_Histogram [-n]     | Normalizing Histogram (numpy)      |
+   | --Normalizing_Stain_Vectors [-s] | Normalizing Stain Vector (numpy)   |
+   | --Output_Directory [-o]          | Normalized Image of interest (png) |
    
-      
+   #### Usage
+   
+   ```
+   >>> Normalize_Image.py
+         --Image_To_Normalize        266290664.jpg
+         --Normalizing_Histogram     100ImageCohortHistograms.npy
+         --Normalizing_Stain_Vectors 100ImageCohortStainVectors.npy
+         --Output_Directory          Normalized_Images_Directory
+   ```
+   
+   
 
 ## Authors
 
-![](./images/authors.png)
+![Authors](./images/authors.png)
 
 ## License
 
