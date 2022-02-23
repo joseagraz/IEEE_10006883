@@ -1,8 +1,6 @@
 Robust Image Population-based Stain Normalization: How Many Reference Images Are Enough to
 Normalize?
 
-[![Community](https://img.shields.io/badge/Join-Community-blue)](https://developer.ibm.com/callforcode/solutions/projects/get-started/) [![Website](https://img.shields.io/badge/View-Website-blue)](https://sample-project.s3-web.us-east.cloud-object-storage.appdomain.cloud/)
-
 ## Contents
 
 - [Image Population Based Histological Normalization](#submission-or-project-name)
@@ -53,7 +51,7 @@ The project provides the following features:
    | --Slide_Image                | Image of interest (jpg)                                      |
    | --Label_Map_Image            | Image map of image of interest (png)                         |
    | --Gray_Level_To_Label_Legend | Gray level color legend (csv file)                           |
-   | --Output_Dataframe_File      | Output pandas dataframe file name (parquet)                  |
+   | --Output_Dataframe_File      | Output Stain Vectors and Histogram pandas dataframe file name (parquet) |
    | --Excluding_Labels           | Small or dubious labels in the label map image to ignore (text) |
 
    
