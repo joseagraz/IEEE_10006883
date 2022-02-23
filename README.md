@@ -1,5 +1,4 @@
-Robust Image Population-based Stain Normalization: How Many Reference Images Are Enough to
-Normalize?
+## Robust Image Population-based Stain Normalization: How Many Reference Images Are Enough to Normalize?
 
 ## Contents
 
@@ -29,7 +28,7 @@ The aggregation of a whole slide image (WSI) cohort subset is representative of 
 
 2. Execute installation [Python packages](./Installation_Bash_Files/Python_Packages_Install.sh) bash file 
 
-   Note: See a full list of CBICA python conda base environment [packages and respective versions](./Installation_Bash_Files/CBICA_Cluster_Package_Versions.txt) 
+   Note: See a full list of CBICA's python conda environment [packages and respective versions](./Installation_Bash_Files/CBICA_Cluster_Package_Versions.txt) 
 
 
 ## Project roadmap
