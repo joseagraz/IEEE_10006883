@@ -33,8 +33,7 @@ from datetime            import datetime
 __author__  = ['Jose L. Agraz, PhD']
 __status__  = "Public_Access"
 __email__   = "jose@agraz.email"
-__credits__ = ["Spyros Bakas"]
-__credits__ = ["Caleb C."]
+__credits__ = ['Spyros Bakas','Caleb Grenko']
 __license__ = "GPL"
 __version__ = "Feb_17_2022"
 #-----------------------------------------------------------------
