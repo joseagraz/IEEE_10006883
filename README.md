@@ -45,7 +45,7 @@ Figure 1. Image normalization work flow. 1) Compute all cohort images stain vect
 
 ## Getting started
 
-See provided [normalization example](./Normalization_Example) for a cohort of four images
+See provided [normalization example](./Normalization_Example) for a cohort of four images. First, create a conda environment [ColorNormalization](./images/ColorNormalization), install [Conda](./Installation_Bash_Files/Conda_Packages_Install.sh) and [Python](./Installation_Bash_Files/Python_Packages_Install.sh) pakages. Then, execute [Example.sh](./Example.sh) bash file
 
 ### Work-flow python scripts
 
@@ -63,7 +63,7 @@ See provided [normalization example](./Normalization_Example) for a cohort of fo
 
    ```
    >>> Produce_Image_Stain_Vectors_and_Optical_Density.py
-         --Slide_Image                    266290664.jpg
+         --Slide_Image                266290664.jpg
          --Label_Map_Image            W19-1-1-D.01_23_LM_266290664.png
          --Gray_Level_To_Label_Legend LV_Gray_Level_to_Label.csv
          --Output_Dataframe_File      Dataframe_266290664
