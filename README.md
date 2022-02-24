@@ -39,7 +39,7 @@ The project provides the following features:
 - Aggregates the stain vectors and histogram for a given set of images
 - Normalizes a given image using the aggregated stain vectors and histogram using [Vahadane's](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7460968) algorithm
 
-![Normalization Work Flow](./images/Flow_GitHub.svg)
+![Normalization Work Flow](./support_files/Flow_GitHub.svg)
 
 Figure 1. Image normalization work flow. 1) Compute all cohort images stain vectors and optical densities. 2) Aggregate stain vectors and histograms for a give number of random images. 3) Use aggregated stain vectors and histogram to normalize all images in cohort. 
 
@@ -116,7 +116,7 @@ See provided [normalization example](./Normalization_Example) for a cohort of fo
 
 ## Authors
 
-![Authors](./images/authors.png)
+![Authors](./support_files/authors.png)
 
 ## License
 
