@@ -14,7 +14,7 @@ Enviroment_Loading_Attempts=3
 for Enviroment_Loop in {1..$Enviroment_Loading_Attempts..1}                                                       
 do                                                                                       
        echo "Interation="$Enviroment_Loop                                                   
-       source activate ColorNormalization                                                 
+       source activate Color_Normalization_Enviroment                                                 
        if [ $? == 0 ]; then                                                                 
            echo "Enviroment Active"                                                         
            # Generate pandas dataframes containing stain vectors and optical density for image 266290664.jpg
