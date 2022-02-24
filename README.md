@@ -45,7 +45,7 @@ Figure 1. Image normalization work flow. 1) Compute all cohort images stain vect
 
 ## Getting started
 
-See provided [normalization example](./Normalization_Example) for a cohort of four images and execute [Example.sh](./Normalization_Example/Example.sh) bash file
+Explore provided [normalization example](./Normalization_Example) for a cohort of four images, see [Example.sh](./Normalization_Example/Example.sh) bash file for detailed execution steps
 
 ### Work-flow python scripts
 
