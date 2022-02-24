@@ -10,7 +10,7 @@
 #$ -e ../SgeDump/Example_$JOB_ID.stderr
 ############################## END OF DEFAULT EMBEDDED SGE COMMANDS ########################
 echo "Enviroment Loading"   
-Enviroment_Loading_Attempts=3                                                                                                                                                                      
+Enviroment_Loading_Attempts=3  # CBICA Cluster may need more than one attempt to load enviroment
 for Enviroment_Loop in {1..$Enviroment_Loading_Attempts..1}                                                       
 do                                                                                       
        echo "Interation="$Enviroment_Loop                                                   
