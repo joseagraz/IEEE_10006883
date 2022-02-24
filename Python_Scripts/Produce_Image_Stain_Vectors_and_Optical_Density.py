@@ -29,12 +29,13 @@ import Utilities
 import numpy          as np
 import pandas         as pd
 import dask.array     as da
+#
 __author__  = ['Jose L. Agraz, PhD']
 __status__  = "Public_Access"
-__email__   = "jose@agraz.email"
+__email__   = "software@cbica.upenn.edu"
 __credits__ = ['Spyros Bakas','Caleb Grenko']
 __license__ = "GPL"
-__version__ = "Feb_17_2022"
+__version__ = "0.0.1"
 # ------------------------------------------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------------------------------------------
@@ -290,7 +291,15 @@ def GetArguments():
     'Towards Population-based Histologic Stain Normalization of Glioblastoma. The script              \n' + \
     'calculates the parameters below per image and feature. Then, stores the results                  \n' + \
     'in a dataframe. The dataframe is saved in pickle format at given path for later                  \n' + \
-    'analysis.                                                                                        ' 
+    'analysis.                                                                                        \n' + \
+    '                                                                                                 \n' + \
+    'usage:                                                                                           \n' + \
+    'Produce_Image_Stain_Vectors_and_Optical_Density.py                                               \n' + \
+    '      --Slide_Image                266290664.jpg                                                 \n' + \
+    '      --Label_Map_Image            W19-1-1-D.01_23_LM_266290664.png                              \n' + \
+    '      --Gray_Level_To_Label_Legend LV_Gray_Level_to_Label.csv                                    \n' + \
+    '      --Output_Dataframe_File      Dataframe_266290664                                           \n' + \
+    '      --Excluding_Labels           \"\"                                                          \n'     
         
     parser = argparse.ArgumentParser(description=DESCRITPTION_MESSAGE)
     # ------------------------------------
@@ -300,9 +309,11 @@ def GetArguments():
     parser.add_argument('-o', '--Output_Dataframe_File',      required=True,  help='Output File where to place Dataframe results')
     parser.add_argument('-x', '--Excluding_Labels',           required=True,  help='Feature Names to exclude. format Example: "Label 1, Label 2,...Label N"')    
     parser.add_argument('-t', '--Stain_Vector_Training',      required=False, default=600,  help='Stain Vector Training time in seconds')
-    parser.add_argument('-v', '--Stain_Vector_Lambda',        required=False, default=0.1, help='Stain Vector Lambda')
+    parser.add_argument('-a', '--Stain_Vector_Lambda',        required=False, default=0.1, help='Stain Vector Lambda')
     parser.add_argument('-d', '--Density_Map_Lambda',         required=False, default=0.01,  help='Density Map Lambda')
-    # ------------------------------------
+    
+    parser.add_argument('-v', '--version', action='version', version= "%(prog)s (ver: "+__version__+")")    
+
     args = parser.parse_args()
 
     return args
@@ -413,8 +424,6 @@ def Initialize():
     print('----------------------------------------------------')
     print('Initialization Begins')
     # ------------------------------------
-    print('Fetch input arguments')
-    InputArguments                     = GetArguments()
     print('Exclude invalid features')
     GreyLevelLabels                    = ExcludeFeatureLabels(InputArguments.Excluding_Labels)   
     # ------------------------------------
@@ -873,13 +882,14 @@ def Terminate(ComponentList):
         print('Empty Dataframe')
       
 # ------------------------------------------------------------------------------------------------
-
+    
 if __name__ == "__main__":
     # ---------------------------------------
-    ComponentList = list()
+    ComponentList  = list()
+    InputArguments = GetArguments()
     # ---------------------------------------
     StartTimer = datetime.now()
-    TimeStamp = 'Start Time (hh:mm:ss.ms) {}'.format(StartTimer)
+    TimeStamp  = 'Start Time (hh:mm:ss.ms) {}'.format(StartTimer)
     print(TimeStamp)  
     # ---------------------------------------
     try:

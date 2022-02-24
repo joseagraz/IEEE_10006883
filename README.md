@@ -24,11 +24,11 @@ The aggregation of a whole slide image (WSI) cohort subset is representative of 
 
 ## Installation
 
-1. Execute installation [Conda packages](./Installation_Bash_Files/Conda_Packages_Install.sh) bash file
+Create a python environment and install packages listed in conda explicit [spec-file.txt](./support_files/spec-file.txt) file. See syntax below
 
-2. Execute installation [Python packages](./Installation_Bash_Files/Python_Packages_Install.sh) bash file 
-
-   Note: See a full list of CBICA's python conda environment [packages and respective versions](./Installation_Bash_Files/CBICA_Cluster_Package_Versions.txt) 
+```
+conda create --name Color_Normalization_Enviroment python=3.6.5 --file spec-file.txt
+```
 
 
 ## Project roadmap
@@ -45,7 +45,7 @@ Figure 1. Image normalization work flow. 1) Compute all cohort images stain vect
 
 ## Getting started
 
-See provided [normalization example](./Normalization_Example) for a cohort of four images. First, create a conda environment [ColorNormalization](./images/conda-cheatsheet.pdf), install [Conda](./Installation_Bash_Files/Conda_Packages_Install.sh) and [Python](./Installation_Bash_Files/Python_Packages_Install.sh) pakages. Then, execute [Example.sh](./Normalization_Example/Example.sh) bash file
+See provided [normalization example](./Normalization_Example) for a cohort of four images and execute [Example.sh](./Normalization_Example/Example.sh) bash file
 
 ### Work-flow python scripts
 

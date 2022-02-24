@@ -30,12 +30,13 @@ import pandas            as pd
 import dask.dataframe    as dd
 from pathlib             import Path
 from datetime            import datetime
+#
 __author__  = ['Jose L. Agraz, PhD']
 __status__  = "Public_Access"
-__email__   = "jose@agraz.email"
+__email__   = "software@cbica.upenn.edu"
 __credits__ = ['Spyros Bakas','Caleb Grenko']
 __license__ = "GPL"
-__version__ = "Feb_17_2022"
+__version__ = "0.0.1"
 #-----------------------------------------------------------------
 # Constants
 #-----------------------------------------------------------------
@@ -58,7 +59,15 @@ def GetArguments():
     '             Then, selects the largest optimal bin size and calculates the         \n' +\
     '             histogram for every feature using these bins. Finally, the            \n' +\
     '             scripts merges all histograms and stores the info in a npy file       \n' +\
-    '             with format: [[Hematoxylin,Bin],[Eosin,bin]]                          '
+    '             with format: [[Hematoxylin,Bin],[Eosin,bin]]                          \n' +\
+    '                                                                                   \n' +\
+    'usage:                                                                             \n' +\
+    'Aggregate_Stain_Vectors_and_Histograms.py                                          \n' +\
+    '     --Histogram_Dataframe_Directory     Histogram_Dataframes                      \n' +\
+    '     --Stain_Vector_Dataframe_Directory  Stain_Vectors_Dataframes                  \n' +\
+    '     --Output_Directory                  Normalization_Parameters_Directory        \n' +\
+    '     --Number_of_Images                  1864                                        '
+     
 
     parser = argparse.ArgumentParser(description=DESCRITPTION_MESSAGE)
 
@@ -66,6 +75,8 @@ def GetArguments():
     parser.add_argument('-s', '--Stain_Vector_Dataframe_Directory', required=True, help='Stain Vector Dataframe Directory')
     parser.add_argument('-o', '--Output_Directory',                 required=True, help='Output Directory')
     parser.add_argument('-i', '--Number_of_Images',                 required=True, help='Number of Random Images')
+    
+    parser.add_argument('-v', '--version', action='version', version= "%(prog)s (ver: "+__version__+")")    
         
     args = parser.parse_args()
     

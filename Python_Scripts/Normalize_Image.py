@@ -34,10 +34,10 @@ from dask_image.imread  import imread
 #
 __author__  = 'Jose L. Agraz, PhD'
 __status__  = "Public_Access"
-__email__   = 'jose@agraz.email'
+__email__   = 'software@cbica.upenn.edu'
 __credits__ = ['Spyros Bakas','Caleb Grenko']
 __license__ = "GPL"
-__version__ = "Feb_17_2022"
+__version__ = "0.0.1"
 #
 #------------------------------------------------------------------------------------------------
 # Constants
@@ -61,7 +61,14 @@ def GetArguments():
     'The Normalizing histogram is a tuple with two numpy arrays. The first array holds color   \n' +\
     'info (float) and the second the pixel count (int). There two histograms per npy file,     \n' +\
     'the first is Hematoxylin: Color, pixel count, and the 2nd Eosin: Color, pixel count       \n' +\
-    'The stain vectors is an array of three RGB values, the first Hematoxylin and the 2nd Eosin'
+    'The stain vectors is an array of three RGB values, the first Hematoxylin and the 2nd Eosin\n' +\
+    '                                                                                          \n' +\
+    'usage:                                                                                    \n' +\
+    'Normalize_Image.py                                                                        \n' +\
+    '      --Image_To_Normalize        266290664.jpg                                           \n' +\
+    '      --Normalizing_Histogram     100ImageCohortHistograms.npy                            \n' +\
+    '      --Normalizing_Stain_Vectors 100ImageCohortStainVectors.npy                          \n' +\
+    '      --Output_Directory          Normalized_Images_Directory                             \n' 
     
     parser = argparse.ArgumentParser(description=DESCRITPTION_MESSAGE)
     parser.add_argument('-i', '--Image_To_Normalize',       required=True,  help='Image to Normalize')
@@ -69,11 +76,13 @@ def GetArguments():
     parser.add_argument('-s', '--Normalizing_Stain_Vectors',required=True,  help='Normalizing Stain Vector numpy')
     parser.add_argument('-o', '--Output_Directory',         required=True,  help='Output Directory')
     parser.add_argument('-t', '--Stain_Vector_Training',    required=False, default=600,  help='Stain Vector Training time in seconds')
-    parser.add_argument('-v', '--Stain_Vector_Lambda',      required=False, default=0.1,  help='Stain Vector Lambda')
+    parser.add_argument('-l', '--Stain_Vector_Lambda',      required=False, default=0.1,  help='Stain Vector Lambda')
     parser.add_argument('-d', '--Density_Map_Lambda',       required=False, default=0.01, help='Density Map Lambda')    
+
+    parser.add_argument('-v', '--version', action='version', version= "%(prog)s (ver: "+__version__+")")    
     
     args = parser.parse_args()
-
+    
     return args
 
 #------------------------------------------------------------------------------------------------
@@ -473,15 +482,19 @@ def FindDensityMap(OpticalDensityImage,SlideStainVectors):
                                   pos     = True)
     return StainDensityMap.toarray().T
 #------------------------------------------------------------------------------------------------
+if __name__ == "__version__": 
+    print ("File1 is being run directly")
 if __name__ == "__main__":
 
+    InputArguments          = GetArguments()
+    
     StartTimer = datetime.now()
     TimeStamp  = 'Start Time (hh:mm:ss.ms) {}'.format(StartTimer)
     print(TimeStamp)
     #------------------------------------------------------------------------------------------------
     NormalizedImage         = da.from_array([], chunks='200MiB') 
 
-    InputArguments          = GetArguments()
+    #InputArguments          = GetArguments()
 
     OutputFilePath          = Initialize()    
 
