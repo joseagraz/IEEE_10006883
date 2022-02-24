@@ -26,7 +26,7 @@ do
              --Output_Dataframe_File      Images_DataFrames\
              --Excluding_Labels           ""
            # Aggregate stain vectors and histograms
-           # Pre-computed stain vectors and histograms for 3 other images to spped up the process 
+           # Pre-computed stain vectors and histograms for 3 other images to speed up the process 
            python ../Python_Scripts/Aggregate_Stain_Vectors_and_Histograms.py\
              --Histogram_Dataframe_Directory    Images_Dataframes/Images_Histograms_DataFrames\
              --Stain_Vector_Dataframe_Directory Images_Dataframes/Images_Stain_Vectors_DataFrames\
