@@ -16,7 +16,8 @@ do
        echo "Interation="$Enviroment_Loop                                                   
        source activate Color_Normalization_Enviroment                                                 
        if [ $? == 0 ]; then                                                                 
-           echo "Enviroment Active"                                                         
+           echo "Enviroment Active"   
+           # ------------------------------------------------------------------------------------------------                                                      
            # Generate pandas dataframes containing stain vectors and optical density for image 266290664.jpg
            # Must do for every iamge in cohort. This is only a single image example
            python ../Python_Scripts/Produce_Image_Stain_Vectors_and_Optical_Density.py\
@@ -25,6 +26,7 @@ do
              --Gray_Level_To_Label_Legend Csv_Files/LV_Gray_Level_to_Label.csv\
              --Output_Dataframe_File      Images_DataFrames\
              --Excluding_Labels           ""
+           # ------------------------------------------------------------------------------------------------
            # Aggregate stain vectors and histograms
            # Pre-computed stain vectors and histograms for 3 other images to speed up the process 
            python ../Python_Scripts/Aggregate_Stain_Vectors_and_Histograms.py\
@@ -32,6 +34,7 @@ do
              --Stain_Vector_Dataframe_Directory Images_Dataframes/Images_Stain_Vectors_DataFrames\
              --Output_Directory                 Normalization_Parameters\
              --Number_of_Images                 4
+           # ------------------------------------------------------------------------------------------------
            # Normalize image 266290664.jpg using aggregated parameters above
            # Must do for every iamge in cohort. This is only a single image example
            python ../Python_Scripts/Normalize_Image.py\
@@ -39,7 +42,7 @@ do
              --Normalizing_Histogram      Normalization_Parameters/4_Image_Cohort_Aggregated_Normalization_Parameters/4ImageCohortHistograms.npy\
              --Normalizing_Stain_Vectors  Normalization_Parameters/4_Image_Cohort_Aggregated_Normalization_Parameters/4ImageCohortStainVectors.npy\
              --Output_Directory           Images_and_Maps/Normalized_Images
-           #
+           # ------------------------------------------------------------------------------------------------
            break                                                                            
        fi                                                                                   
 done                                                                                     
