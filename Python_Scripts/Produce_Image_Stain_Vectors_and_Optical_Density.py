@@ -3,7 +3,7 @@
 # Date: February 17, 2022
 # Author: Jose L. Agraz, PhD
 #
-# Description: This script calculates the stain vectors and color histogram for H & E histology image
+# Description: This script calculates the stain vectors and color histogram for a H & E histology image
 #
 # Usage Example:
 #       python Produce_Image_Stain_Vectors_and_Optical_Density.py\ 
@@ -16,7 +16,7 @@
 #
 # Notes:
 # ------------------------------------------------------------------------------------------------
-# Library imports
+# Library imports. 
 # ------------------------------------------------------------------------------------------------
 from __future__     import division
 from pathlib        import Path
@@ -29,7 +29,7 @@ import Utilities
 import numpy          as np
 import pandas         as pd
 import dask.array     as da
-#
+# ------------------------------------------------------------------------------------------------
 __author__  = ['Jose L. Agraz, PhD']
 __status__  = "Public_Access"
 __email__   = "software@cbica.upenn.edu"
@@ -39,17 +39,16 @@ __version__ = "0.0.1"
 # ------------------------------------------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------------------------------------------
-HEMATOXYLIN_STAIN                   = 0
-EOSIN_STAIN                         = 1
-OUTPUT_FILE_EXTENSION               = 'parquet'
-IMAGES_DATAFRAMES                   = 'Images_Stain_Stats_DataFrames'
-HISTOGRAMS_DATAFRAMES               = 'Images_Histograms_DataFrames'
-HEMATOXYLIN_STAIN_LABEL             = 'Hematoxylin'
-EOSIN_STAIN_LABEL                   = 'Eosin'
+HEMATOXYLIN_STAIN           = 0
+EOSIN_STAIN                 = 1
+OUTPUT_FILE_EXTENSION       = 'parquet'
+IMAGES_DATAFRAMES           = 'Images_DataFrames'
+HISTOGRAMS_DATAFRAMES       = 'Images_Histograms_DataFrames'
+HEMATOXYLIN_STAIN_LABEL     = 'Hematoxylin'
+EOSIN_STAIN_LABEL           = 'Eosin'
 # ------------------------------------------------------------------------------------------------
 # Global variables
 # ------------------------------------------------------------------------------------------------
-InputImagesDictionary       = dict()
 GrayLevelLabelMapDataFrame  = pd.DataFrame()
 # ------------------------------------------------------------------------------------------------
 class CompositeStatistics:
@@ -109,16 +108,14 @@ class CompositeStatistics:
         self.Eosin_Image_25_Percent                 = float()
         self.Eosin_Image_50_Percent                 = float()
         self.Eosin_Image_75_Percent                 = float()        
-        self.Eosin_Image_Max                        = float()
- 
+        self.Eosin_Image_Max                        = float()    
     # ------------------------------------------------------
+
     def ImageComposite(self, ImageName, MapName, Feature, ImageData):
         global InputArguments
         RED_COLOR                               = 0
         GREEN_COLOR                             = 1
-        BLUE_COLOR                              = 2
-        HEMATOXYLIN_STAIN                       = 0
-        EOSIN_STAIN                             = 1
+        BLUE_COLOR                              = 2        
         
         print('Define Image Info Variables')
         SlideImageName                          = str()
@@ -179,6 +176,7 @@ class CompositeStatistics:
         SlideImageName                              = Path(ImageName).name
         LabelMapImageName                           = Path(MapName).name        
         print('Calculating Image Stain Vectors')
+
         StainVectors_S                              = Utilities.CalculateStainVector(ImageData,float(InputArguments.Stain_Vector_Lambda),int(InputArguments.Stain_Vector_Training))
         print('Calculating Image Density Map')
         StainPixelDensity_W                         = Utilities.CalculateDensityMap(ImageData, StainVectors_S,float(InputArguments.Density_Map_Lambda))        
@@ -186,7 +184,7 @@ class CompositeStatistics:
         RgbStainVectors                             = Utilities.od2rgb(StainVectors_S)
         print('Extracting Hematoxylin Density')
         AllHematoxylinDensities                     = StainPixelDensity_W[:, HEMATOXYLIN_STAIN]
-        print('Remove all pixels that do not actually contain hematoxylin')
+        print('Remove all pixels that don not actually contain hematoxylin')
         NonZeroHematoxylinDensities                 = AllHematoxylinDensities[np.nonzero(AllHematoxylinDensities)] 
         # ------------------------------------        
         HematoxylinPixelDensity                     = np.array(NonZeroHematoxylinDensities.tolist())        
@@ -284,6 +282,7 @@ class CompositeStatistics:
 # Input: Slides, Label Map Color file, and output file
 # Output: Argument list
 # ------------------------------------------------------------------------------------------------
+
 def GetArguments():
     DESCRITPTION_MESSAGE = \
     'This scripts calculates the stain vectors and histogram for a given image.                       \n' + \
@@ -299,8 +298,8 @@ def GetArguments():
     '      --Label_Map_Image            W19-1-1-D.01_23_LM_266290664.png                              \n' + \
     '      --Gray_Level_To_Label_Legend LV_Gray_Level_to_Label.csv                                    \n' + \
     '      --Output_Dataframe_File      Dataframe_266290664                                           \n' + \
-    '      --Excluding_Labels           \"\"                                                          \n'     
-        
+    '      --Excluding_Labels           \"\"                                                          \n'  
+    
     parser = argparse.ArgumentParser(description=DESCRITPTION_MESSAGE)
     # ------------------------------------
     parser.add_argument('-s', '--Slide_Image',                required=True,  help='Slide Image')
@@ -308,40 +307,42 @@ def GetArguments():
     parser.add_argument('-g', '--Gray_Level_To_Label_Legend', required=True,  help='CSV file containing gray level legend')    
     parser.add_argument('-o', '--Output_Dataframe_File',      required=True,  help='Output File where to place Dataframe results')
     parser.add_argument('-x', '--Excluding_Labels',           required=True,  help='Feature Names to exclude. format Example: "Label 1, Label 2,...Label N"')    
-    parser.add_argument('-t', '--Stain_Vector_Training',      required=False, default=600,  help='Stain Vector Training time in seconds')
-    parser.add_argument('-a', '--Stain_Vector_Lambda',        required=False, default=0.1, help='Stain Vector Lambda')
-    parser.add_argument('-d', '--Density_Map_Lambda',         required=False, default=0.01,  help='Density Map Lambda')
+    parser.add_argument('-b', '--Bin_Size',                   required=False, default=32768, help='Bin Size, use an integer')
+    parser.add_argument('-t', '--Stain_Vector_Training',      required=False, default=240,   help='Stain Vector Training time in seconds')
+    parser.add_argument('-e', '--Stain_Vector_Lambda',        required=False, default=0.01,  help='Stain Vector Lambda')
+    parser.add_argument('-d', '--Density_Map_Lambda',         required=False, default=0.1,   help='Density Map Lambda')
     
-    parser.add_argument('-v', '--version', action='version', version= "%(prog)s (ver: "+__version__+")")    
-
+    parser.add_argument('-v', '--version', action='version', version= "%(prog)s (ver: "+__version__+")")   
+    # ------------------------------------
     args = parser.parse_args()
 
     return args
 
 # ------------------------------------------------------------------------------------------------
-# Function Name: Parse Invalid Labels
+# Function Name: Exclude Feature Labels
 # Author: Jose L. Agraz, PhD., 
 # Date: 03/12/2020
 # Description: 
 # Input: Excluding Feature List
 # Output: gray level label 
 # ------------------------------------------------------------------------------------------------
+
 def ExcludeFeatureLabels(ExcludingFeatureList):
-    EXCLUDING_LABELS_NAMES_REGEX  = '((?:\w+\s?){0,6}),?'
-    GRAY_LEVEL_VALID_LABELS_TUPLE = ('Leading Edge',
-                                     'Infiltrating Tumor',
-                                     'Cellular Tumor',
-                                     'Necrosis',
-                                     'Perinecrotic Zone',
-                                     'Pseudopolisading Cells around Necrosis',
-                                     'Pseudopolisading Cells but no visible Necrosis',
-                                     'Hyperplastic Blood',
-                                     'Microvascular Proliferation'
-                                     )
-    FeatureName                  = str()
-    FeatureIndex                 = int()
-    GroupList                    = list()
-    NewGrayLevelLabelList        = list(GRAY_LEVEL_VALID_LABELS_TUPLE)
+    GRAY_LEVEL_VALID_LABELS_TUPLE       = ('Leading Edge',
+                                           'Infiltrating Tumor',
+                                           'Cellular Tumor',
+                                           'Necrosis',
+                                           'Perinecrotic Zone',
+                                           'Pseudopolisading Cells around Necrosis',
+                                           'Pseudopolisading Cells but no visible Necrosis',
+                                           'Hyperplastic Blood',
+                                           'Microvascular Proliferation'
+                                           ) 
+    EXCLUDING_LABELS_NAMES_REGEX        = '((?:\w+\s?){0,6}),?'
+    FeatureName           = str()
+    FeatureIndex          = int()
+    GroupList             = list()
+    NewGrayLevelLabelList = list(GRAY_LEVEL_VALID_LABELS_TUPLE)
     # ------------------------------------
     print('Check for empty input')
     if ExcludingFeatureList:
@@ -369,6 +370,7 @@ def ExcludeFeatureLabels(ExcludingFeatureList):
 # Input: path
 # Output: output path
 # ------------------------------------------------------------------------------------------------
+
 def CreateDirectory(OutputPath):
     try:
         print('Creating directory:\n{}'.format(OutputPath))
@@ -385,6 +387,7 @@ def CreateDirectory(OutputPath):
 # Input: Data path
 # Output: Dataframe
 # ------------------------------------------------------------------------------------------------
+
 def ImportGrayLevelLegendData(SpreadsheetPath,GreyLevelLabels):
     # Initialize variables
     FEATURE_LABEL_COLUMN_TITLE    = 'FeatureLabel'
@@ -416,25 +419,33 @@ def ImportGrayLevelLegendData(SpreadsheetPath,GreyLevelLabels):
 # Input: None
 # Output: Image and map data
 # ------------------------------------------------------------------------------------------------
+
 def Initialize():
     global GrayLevelLabelMapDataFrame
-    global InputImagesDictionary
     global InputArguments
 
     print('----------------------------------------------------')
     print('Initialization Begins')
+    SGE_DATA_LOGS                      = 'SgeDump'
     # ------------------------------------
+    print('Fetch input arguments')
+    InputArguments                     = GetArguments()
     print('Exclude invalid features')
     GreyLevelLabels                    = ExcludeFeatureLabels(InputArguments.Excluding_Labels)   
     # ------------------------------------
     print('Create output directories')
+    CreateDirectory(str(Path(InputArguments.Output_Dataframe_File).parent.parent/ SGE_DATA_LOGS))
     CreateDirectory(str(Path(InputArguments.Output_Dataframe_File).parent/ IMAGES_DATAFRAMES))  
     CreateDirectory(str(Path(InputArguments.Output_Dataframe_File).parent/ HISTOGRAMS_DATAFRAMES))  
     # ------------------------------------
-    print('Fetch Slides and Level Map Images')
-    InputImagesDictionary              = {InputArguments.Slide_Image: InputArguments.Label_Map_Image}
     print('Import Gray Level Legend CSV file')
     GrayLevelLabelMapDataFrame         = ImportGrayLevelLegendData(InputArguments.Gray_Level_To_Label_Legend,GreyLevelLabels)
+    # ------------------------------------
+    DataFramePath   = pathlib.Path(str(Path(InputArguments.Output_Dataframe_File).parent / HISTOGRAMS_DATAFRAMES / Path(InputArguments.Output_Dataframe_File).name) + '.' + OUTPUT_FILE_EXTENSION)
+    print('Test for File in Directory:{}'.format(DataFramePath))
+    # ------------------------------------
+    DataFramePath   = pathlib.Path(str(Path(InputArguments.Output_Dataframe_File).parent / IMAGES_DATAFRAMES / Path(InputArguments.Output_Dataframe_File).name) + '.' + OUTPUT_FILE_EXTENSION)
+    print('Test for File in Directory:{}'.format(DataFramePath))
     # ------------------------------------
     print('Get image pairs')
     SlideImageArray,\
@@ -453,18 +464,21 @@ def Initialize():
 # Input: Label map and image
 # Output: Matching Features to gray level pixel map
 # ------------------------------------------------------------------------------------------------
+
 def FindAndLabelUniquePixels(MapDataFrame, ImageLabelMap):  # Pixel by pixel find unique pixels
     global InputArguments
-    GRAY_LEVEL_COLUMN_TITLE = 'GrayLevel'
-    FIRST_ITEM              = 0
-    FeaturesFoundInImage    = pd.DataFrame()
+    GRAY_LEVEL_COLUMN_TITLE             = 'GrayLevel'
+    FIRST_ITEM                          = 0
+    # ------------------------------------
+    print('Initialize variables')
+    FeaturesFoundInImage = pd.DataFrame()
     # ------------------------------------
     print('Scanning for unique pixel colors in Label Map Legend')
     UniqueColors = np.unique(ImageLabelMap) 
     # ------------------------------------
     for UniqueColor in UniqueColors:
         print('Search for pixel color matches in Label Map Legend file') # Rather than using a single line, code below is more readable
-        # FoundPixelInLabelMap = MapDataFrame[MapDataFrame[GRAY_LEVEL_COLUMN_TITLE]==UniqueColor]
+        # 
         SeriesOfInterest        = MapDataFrame[GRAY_LEVEL_COLUMN_TITLE]
         BooleanSeriesOfInterest = SeriesOfInterest.isin([UniqueColor])
         FoundPixelInLabelMap    = MapDataFrame[BooleanSeriesOfInterest]
@@ -484,33 +498,34 @@ def FindAndLabelUniquePixels(MapDataFrame, ImageLabelMap):  # Pixel by pixel fin
 # Input: path and image pair names
 # Output: Images
 # ------------------------------------------------------------------------------------------------
+
 def LoadImagePairs(SlideName, LabelMapName):
-    GRAY_SCALE_MODE                     = 0
-    
+
+    GRAY_SCALE_MODE         = 0
     print('Processing Image Pairs: ')
     print('\tSlide: \t\t{}  '.format(Path(SlideName).name))
     print('\tLabel Map: \t{}'.format(Path(LabelMapName).name))
-
-    TestFileForExistance(SlideName)
-    TestFileForExistance(LabelMapName)
+    
+    TestFile(SlideName)
+    TestFile(LabelMapName)
     # ------------------------------------
     ImageOfInterestBGR = cv2.imread(SlideName,cv2.IMREAD_COLOR)
     print('OpenCV retrieves images in a BGRcolor sequence')
     ImageOfInterestRGB = cv2.cvtColor(ImageOfInterestBGR, cv2.COLOR_BGR2RGB)
     LabelMapImage      = cv2.imread(LabelMapName, GRAY_SCALE_MODE)
-
+    
     return ImageOfInterestRGB, LabelMapImage
 
-
 # ------------------------------------------------------------------------------------------------
-# Function Name: Test File For Existance
+# Function Name: Test file
 # Author: Jose L. Agraz, PhD., 
 # Date: 04/14/2020
 # Description: Verify there are no problems with file
 # Input: File name
 # Output: None
 # ------------------------------------------------------------------------------------------------
-def TestFileForExistance(FileName):
+
+def TestFile(FileName):
     try:
 
         FileNamePath = pathlib.Path(FileName)
@@ -531,6 +546,7 @@ def TestFileForExistance(FileName):
 # Input: Label Dataframe
 # Output: Gray level, Feature, and RGB lists
 # ------------------------------------------------------------------------------------------------
+
 def SplitLabelDataFrameToLists(DataFrame):
     RGB_COLOR       = -1
     GRAY_COLOR      = 0
@@ -554,10 +570,11 @@ def SplitLabelDataFrameToLists(DataFrame):
 # Input: Image data, Gray Level values
 # Output: Pixel Mask
 # ------------------------------------------------------------------------------------------------
+
 def BuildMaskForTargetFeature(Image, GrayLevel):
     WHITE_COLOR = 255
     BLACK_COLOR = 0
-    PixelMask   = np.where(Image == GrayLevel, WHITE_COLOR, BLACK_COLOR)    
+    PixelMask = np.where(Image == GrayLevel, WHITE_COLOR, BLACK_COLOR)    
     print('Pixel Mask Size               : {}'.format(PixelMask.shape))
     print('Pixel Mask based on Gray Level: {}'.format(GrayLevel))
     return PixelMask
@@ -570,12 +587,13 @@ def BuildMaskForTargetFeature(Image, GrayLevel):
 # Input: Composite statistics data
 # Output: List of Composite statistics data
 # ------------------------------------------------------------------------------------------------
+
 def ClassDataToList(CompositeData):
     print('Initialize variables')
     # ------------------------------------------------------------------------
     HematoxylinComponentList = list()
     EosinComponentList       = list()
-    # ------------------------------------------------------------------------
+
     print('Assign Hematoxylin data')
     HematoxylinComponentList = [CompositeData.SlideImageName,                       \
                                 CompositeData.LabelMapImageName,                    \
@@ -638,10 +656,12 @@ def ClassDataToList(CompositeData):
 # Input: none
 # Output: none
 # ----------------------------------------------------------------------------------
+
 def ExecuteDeconvolution(SlideImage,LabelMapImage):
     global InputArguments
     global GrayLevelLabelMapDataFrame
     NO_PIXELS                       = 0
+    print('Initialize variables')
     MainList                        = list()
     FeatureList                     = list()
     GrayLevelList                   = list()
@@ -652,12 +672,12 @@ def ExecuteDeconvolution(SlideImage,LabelMapImage):
     Statistics                      = CompositeStatistics()
 
     print('Extract image file names')
-    SlideImageName                  = str(Path(InputArguments.Slide_Image).name)
-    LabelMapImageName               = str(Path(InputArguments.Label_Map_Image).name)
-    
+    SlideImageName                 = str(Path(InputArguments.Slide_Image).name)
+    LabelMapImageName              = str(Path(InputArguments.Label_Map_Image).name)
+
     print('List of colors present in the label map. Find all pixels with features')
     PixelsFeaturesInImageDataFrame = FindAndLabelUniquePixels(GrayLevelLabelMapDataFrame, LabelMapImage)
-
+    #
     print('Check for existing feature areas')
     if not PixelsFeaturesInImageDataFrame.empty:
         # --------------------------------------------
@@ -665,23 +685,30 @@ def ExecuteDeconvolution(SlideImage,LabelMapImage):
         FeatureList, GrayLevelList, RGBList = SplitLabelDataFrameToLists(PixelsFeaturesInImageDataFrame)
         print('Scan through gray levels')
         for Feature, GrayLevel in zip(FeatureList, GrayLevelList):
+
             print('----------------------------------------')
             print('Feature: \"{}\", Gray level color: \"{}\"'.format(Feature, GrayLevel))
             print('----------------------------------------')
+
             Statistics = ApplyingFilters(SlideImage, SlideImageName, Statistics, LabelMapImage, LabelMapImageName,GrayLevel,Feature)
+
             print('If the feature has an area, keep feature statistics')
             HematoxylinPixelsFound      =  Statistics.HematoxylinAreaInPixels 
             EosinPixelsFound            =  Statistics.EosinAreaInPixels
             # --------------------------------------------
             if HematoxylinPixelsFound > NO_PIXELS or EosinPixelsFound > NO_PIXELS:
                 print('Add feature statistics to output list')
-                MainList               += ClassDataToList(Statistics)  
+                MainList               += ClassDataToList(Statistics)  # Concatenating lists is cheaper than dataframes
                 print('Update feature counter')
+                #
             else:
+                #
                 print('Discarded Feature: \"{}\", Gray level color: \"{}\"'.format(Feature, GrayLevel))
     else:
         print('Empty dataframe, no unique colors found')
+        print('Dataframe will not hold any data')
         
+    # To be safe, destroy class object
     del Statistics
     return MainList
 
@@ -689,32 +716,47 @@ def ExecuteDeconvolution(SlideImage,LabelMapImage):
 # Function Name: Applying Filters
 # Author: Jose L. Agraz, PhD., 
 # Date: 04/14/2020
-# Description: Wraps up program
-# Input: none
-# Output: none
+# Description: Discards small areas
+# Input: SlideImage, SlideImageName, Statistics, LabelMapImage, LabelMapImageName, GrayLevel,Feature
+# Output: Statistics
 # ------------------------------------------------------------------------------------------------
+
 def ApplyingFilters(SlideImage, SlideImageName, Statistics, LabelMapImage, LabelMapImageName, GrayLevel,Feature):       
     
     NO_PIXELS       = 0
     WHITE_COLOR     = 255
     PixelMask       = BuildMaskForTargetFeature(LabelMapImage, GrayLevel)
     print('Mask For Target Feature: {}'.format(PixelMask.shape))
-    SurvivingPixels = np.count_nonzero(PixelMask)
-    print('Surviving Pixels: {}'.format(SurvivingPixels))    
+    SurvivingPixels  = np.count_nonzero(PixelMask)
+    print('Surviving Pixels: {}'.format(SurvivingPixels))
+    
     print('Areas kept to analyze')
     if SurvivingPixels > NO_PIXELS:
         print('-----------------------------------------------')      
         print('Processing Feature: {}'.format(Feature))
+        print('WhiteMask: True where colored pixels, False where white pixels')
+        #
         WhiteMask   = PixelMask.astype(bool) 
+        print('Applying white mask to RGB image')
         print('Applying 3D White Mask to Image: {}'.format(SlideImageName))
         NewImage    = np.where(WhiteMask[...,None], SlideImage, WHITE_COLOR)
-        Statistics.ImageComposite(SlideImageName,LabelMapImageName,Feature,NewImage)                                          
+        #
+        Statistics.ImageComposite(SlideImageName,LabelMapImageName,Feature,NewImage)                                  
+        
     else:
         print('-----------------------------------------------')        
         print('No areas left to process after filters')
         print('Skipping feature: {}'.format(Feature))   
         print('Output empty statistics class')
-        Statistics  = CompositeStatistics()  
+        Statistics  = CompositeStatistics()
+                
+    print('-----------------------------------------------')
+    print('Calculating Statistics')
+    print('Feature Name     : {}'.format(Feature))
+    print('Surviving Pixels : {}'.format(SurvivingPixels))
+    print('Image Name       : {}'.format(SlideImageName))
+    print('Image Map Name   : {}'.format(LabelMapImageName))        
+    print('-----------------------------------------------')        
     
     return Statistics
 
@@ -723,43 +765,44 @@ def ApplyingFilters(SlideImage, SlideImageName, Statistics, LabelMapImage, Label
 # Author: Jose L. Agraz, PhD
 # Date: 04/14/2020
 # Description: Wraps up program
-# Input: none
-# Output: none
+# Input: Areas Component List
+# Output: Stain Vectors and Optical Density Dataframes
 # ------------------------------------------------------------------------------------------------
+
 def Terminate(ComponentList):   
     global InputArguments
-    BIN_SIZE                   = 32768
-    MAXIMUM_COLOR_BIN          = 10
-    MINIMUM_COLOR_BIN          = 0
-    PERCENT_MINIMUM_PIXEL_AREA = 0.5 
-    DATAFRAME_COLUMN_NAMES     = {     'SlideImageName'             :0,\
-                                       'ImageLabelMapName'          :1,\
-                                       'FeatureName'                :2,\
-                                       'Stain'                      :3,\
-                                       'Area'                       :4,\
-                                       'PixelDensity'               :5,\
-                                       'OpticalDensity_Red_S'       :6,\
-                                       'OpticalDensity_Green_S'     :7,\
-                                       'OpticalDensity_Blue_S'      :8,\
-                                       'RGBStainVector_Red_W'       :9,\
-                                       'RGBStainVector_Green_W'     :10,\
-                                       'RGBStainVector_Blue_W'      :11,\
-                                       'DensityMeans'               :12,\
-                                       'StandardDev'                :13,\
-                                       'MedianDensity'              :14,\
-                                       'Image_Count'                :15,\
-                                       'Image_Mean'                 :16,\
-                                       'Image_Standard_Deviation'   :17,\
-                                       'Image_Min'                  :18,\
-                                       'Image_25_Percent'           :19,\
-                                       'Image_50_Percent'           :20,\
-                                       'Image_75_Percent'           :21,\
-                                       'Image_Max'                  :22\
-                                      }    
 
+    MAXIMUM_COLOR_BIN                   = 10
+    MINIMUM_COLOR_BIN                   = 0
+    PERCENT_MINIMUM_PIXEL_AREA          = 0.5  # 0.5% of WSI size
+    DATAFRAME_COLUMN_NAMES              = {'SlideImageName'             :0,\
+                                           'ImageLabelMapName'          :1,\
+                                           'FeatureName'                :2,\
+                                           'Stain'                      :3,\
+                                           'Area'                       :4,\
+                                           'PixelDensity'               :5,\
+                                           'OpticalDensity_Red_S'       :6,\
+                                           'OpticalDensity_Green_S'     :7,\
+                                           'OpticalDensity_Blue_S'      :8,\
+                                           'RGBStainVector_Red_W'       :9,\
+                                           'RGBStainVector_Green_W'     :10,\
+                                           'RGBStainVector_Blue_W'      :11,\
+                                           'DensityMeans'               :12,\
+                                           'StandardDev'                :13,\
+                                           'MedianDensity'              :14,\
+                                           'Image_Count'                :15,\
+                                           'Image_Mean'                 :16,\
+                                           'Image_Standard_Deviation'   :17,\
+                                           'Image_Min'                  :18,\
+                                           'Image_25_Percent'           :19,\
+                                           'Image_50_Percent'           :20,\
+                                           'Image_75_Percent'           :21,\
+                                           'Image_Max'                  :22\
+                                          }
+        
     print('Initialize variables')
-    BinsArray              = np.arange(MINIMUM_COLOR_BIN, MAXIMUM_COLOR_BIN, MAXIMUM_COLOR_BIN/BIN_SIZE)
-    DataframeIndex         = np.arange(BIN_SIZE-1).tolist()
+    BinsArray              = np.arange(MINIMUM_COLOR_BIN, MAXIMUM_COLOR_BIN, MAXIMUM_COLOR_BIN/int(InputArguments.Bin_Size))
+    DataframeIndex         = np.arange(int(InputArguments.Bin_Size)-1).tolist()
     DataBase               = pd.DataFrame([], columns=[*DATAFRAME_COLUMN_NAMES])   
     DaskBinsArray          = da.from_array(BinsArray)  
     HematoxylinHistogram   = da.from_array([0]*len(DataframeIndex))    
@@ -791,7 +834,8 @@ def Terminate(ComponentList):
                 # --------------------------------------------                    
                 if Feature_Row.Stain == Stain_Name:
                     HematoxylinList +=  Feature_Row.PixelDensity.tolist()
-                    print('Delete Pixel Density from DataFrame')         
+                    print('Delete Pixel Density from DataFrame')
+                 
                     DataBase.loc[Index_Row,'PixelDensity']= np.array([0])                      
         # --------------------------------------------     
         Stain_Name = EOSIN_STAIN_LABEL
@@ -811,21 +855,22 @@ def Terminate(ComponentList):
 
                 if Feature_Row.Stain == Stain_Name:
                     EosinList +=  Feature_Row.PixelDensity.tolist()
-                    print('Delete Pixel Density from DataFrame')                
+                    print('Delete Pixel Density from DataFrame')
+                  
                     DataBase.loc[Index_Row,'PixelDensity']= np.array([0])   
               
         # --------------------------------------------                    
         if len(HematoxylinList):
             Hematoxylin_Statistics = pd.Series(HematoxylinList).describe()
             # --------------------------------------------
-            print('Calculating {} Histogram'.format(HEMATOXYLIN_STAIN_LABEL))       
+            print('Calculating {} Histogram'.format('Hematoxylin'))       
             HematoxylinHistogram,_ = da.histogram(da.from_array(HematoxylinList),DaskBinsArray)       
             
         if len(EosinList):   
             Eosin_Statistics       = pd.Series(EosinList).describe()
             # --------------------------------------------
-            print('Calculating {} Histogram'.format(EOSIN_STAIN_LABEL))        
-            EosinHistogram,_       = da.histogram(da.from_array(EosinList)      ,DaskBinsArray)
+            print('Calculating {} Histogram'.format('Eosin'))        
+            EosinHistogram,_        = da.histogram(da.from_array(EosinList)      ,DaskBinsArray)
         
         print('Build Stain Dictionary')
         # --------------------------------------------                        
@@ -845,7 +890,7 @@ def Terminate(ComponentList):
         # --------------------------------------------        
         
         if len(HematoxylinList):            
-            Stain_Name       = HEMATOXYLIN_STAIN_LABEL
+            Stain_Name = 'Hematoxylin'
             Area_Threshold   = Hematoxylin_Area_Threshold
             Stain_Statistics = Hematoxylin_Statistics            
             print('Insert Image Wide Statistics for {}'.format(Stain_Name))
@@ -859,7 +904,7 @@ def Terminate(ComponentList):
             DataBase.loc[(DataBase.Stain == Stain_Name) & (DataBase.Area > Area_Threshold),'Image_Max'               ] = Stain_Statistics['max'  ]
         # --------------------------------------------        
         if len(EosinList):  
-            Stain_Name       = EOSIN_STAIN_LABEL
+            Stain_Name = 'Eosin'
             Area_Threshold   = Eosin_Area_Threshold
             Stain_Statistics = Eosin_Statistics            
             print('Insert Image Wide Statistics for {}'.format(Stain_Name))
@@ -878,32 +923,86 @@ def Terminate(ComponentList):
         Filtered_Dataframe = pd.concat([DataBase[(DataBase.Stain == HEMATOXYLIN_STAIN_LABEL) & (DataBase.Area > Hematoxylin_Area_Threshold)],\
                                         DataBase[(DataBase.Stain == EOSIN_STAIN_LABEL)       & (DataBase.Area > Eosin_Area_Threshold)]])        
         Filtered_Dataframe.to_parquet(DataFramePath,engine='pyarrow')
+        #------------------------------------------------------------------------------        
+        Update_User= [['Image_Name'                   , Path(DataFramePath).name],                                                                                    \
+                      ['Hematoxylin_Area_Threshold'    , Hematoxylin_Area_Threshold],                                                                                 \
+                      ['Hematoxylin_Area_Total'        , Hematoxylin_Total_Pixel_Area],                                                                               \
+                      ['Hematoxylin_Total_Features'    , len(DataBase[DataBase['Stain']==HEMATOXYLIN_STAIN_LABEL].index)],                                            \
+                      ['Hematoxylin_Features_Kept'     , len(Filtered_Dataframe[Filtered_Dataframe['Stain']==HEMATOXYLIN_STAIN_LABEL].index)],                        \
+                      ['Hematoxylin_Features_Disposed' , len(DataBase[(DataBase.Area <= Hematoxylin_Area_Threshold) & (DataBase['Stain']==HEMATOXYLIN_STAIN_LABEL)])],\
+                      ['Eosin_Area_Threshold'          , Eosin_Area_Threshold],                                                                                       \
+                      ['Eosin_Area_Total'              , Eosin_Total_Pixel_Area],                                                                                     \
+                      ['Eosin_Total_Features'          , len(DataBase[DataBase['Stain']==EOSIN_STAIN_LABEL].index)],                                                  \
+                      ['Eosin_Features_Kept'           , len(Filtered_Dataframe[Filtered_Dataframe['Stain']==EOSIN_STAIN_LABEL].index)],                              \
+                      ['Eosin_Features_Disposed'       , len(DataBase[(DataBase.Area <= Eosin_Area_Threshold) & (DataBase['Stain']==EOSIN_STAIN_LABEL)])],            \
+                      ['Stain_Vector_Training_Time'    , int(InputArguments.Stain_Vector_Training)],                                                                  \
+                      ['Stain_Vector_Lambda'           , float(InputArguments.Stain_Vector_Lambda)],                                                                  \
+                      ['Density_Map_Lambda'            , float(InputArguments.Density_Map_Lambda)],                                                                   \
+                      ['Dataframe_Number_of_Columns'   , len(DataBase.columns)],                                                                                      \
+                      ['Dataframe_Number_of_Rows'      , len(DataBase.index)],                                                                                        \
+                      ['Dataframe_File_Path'           , DataFramePath]                                                                                               \
+                      ]
+        Info_Dataframe = pd.DataFrame(Update_User,columns=['Parameter','Value'])
+        #------------------------------------------------------------------------------
+        print('---------------------------------------------')
+        print('Script Summary                   ')
+        print('---------------------------------------------')        
+        print('Dataframe File Name              : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Image_Name'].Value.values[0]))
+        print('---------------------------------------------')
+        print('Stain Name: {}                           '.format(HEMATOXYLIN_STAIN_LABEL))
+        print('Area Threshold Area/Total Area   : {}% or {} pixels : {} pixels total'.format(PERCENT_MINIMUM_PIXEL_AREA,\
+                                                                 Info_Dataframe[Info_Dataframe.Parameter=='Hematoxylin_Area_Threshold'   ].Value.values[0],\
+                                                                 Info_Dataframe[Info_Dataframe.Parameter=='Hematoxylin_Area_Total'       ].Value.values[0]))
+        print('Total Number of Features Found   : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Hematoxylin_Total_Features'   ].Value.values[0]))
+        print('Total Number of Features Kept    : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Hematoxylin_Features_Kept'    ].Value.values[0]))     
+        print('Total Number of Features Disposed: {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Hematoxylin_Features_Disposed'].Value.values[0]))        
+        print('---------------------------------------------')
+        print('Stain Name: {}                           '.format(EOSIN_STAIN_LABEL))
+        print('Area Threshold Area/Total Area   : {}% or {} pixels : {} pixels total'.format(PERCENT_MINIMUM_PIXEL_AREA,\
+                                                                 Info_Dataframe[Info_Dataframe.Parameter=='Eosin_Area_Threshold'         ].Value.values[0],\
+                                                                 Info_Dataframe[Info_Dataframe.Parameter=='Eosin_Area_Total'             ].Value.values[0]))
+        print('Total Number of Features Found   : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Eosin_Total_Features'         ].Value.values[0]))
+        print('Total Number of Features Kept    : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Eosin_Features_Kept'          ].Value.values[0]))     
+        print('Total Number of Features Disposed: {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Eosin_Features_Disposed'      ].Value.values[0]))
+        print('---------------------------------------------')
+        print('Stain Vector Training Time       : {} sec'.format(Info_Dataframe[Info_Dataframe.Parameter=='Stain_Vector_Training_Time'   ].Value.values[0]))
+        print('Stain Vector Lambda              : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Stain_Vector_Lambda'          ].Value.values[0]))
+        print('Density Map Lambda               : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Density_Map_Lambda'           ].Value.values[0]))
+        print('---------------------------------------------')
+        print('Dataframe Total Number of Columns: {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Dataframe_Number_of_Columns'  ].Value.values[0]))
+        print('Dataframe Total Number of Rows   : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Dataframe_Number_of_Rows'     ].Value.values[0]))
+        print('Dataframe File Location          : {}    '.format(Info_Dataframe[Info_Dataframe.Parameter=='Dataframe_File_Path'          ].Value.values[0]))
+        print('---------------------------------------------')
     else:
-        print('Empty Dataframe')
-      
+        print('Empty Dataframe, File Will Not Be Saved')
+        
 # ------------------------------------------------------------------------------------------------
-    
+
 if __name__ == "__main__":
     # ---------------------------------------
-    ComponentList  = list()
-    InputArguments = GetArguments()
+    ComponentList = list()
     # ---------------------------------------
     StartTimer = datetime.now()
-    TimeStamp  = 'Start Time (hh:mm:ss.ms) {}'.format(StartTimer)
+    TimeStamp = 'Start Time (hh:mm:ss.ms) {}'.format(StartTimer)
     print(TimeStamp)  
-    # ---------------------------------------
     try:
-        # ---------------------------------------   
+        # ---------------------------------------
         print('Begin housekeeping')
         SlideImageArray,\
         LabelMapImageArray  = Initialize()   
-        print('Image Deconvolution')
+        # ---------------------------------------
+        print('Image Deconvolution Begins')
         ComponentList       = ExecuteDeconvolution(SlideImageArray,LabelMapImageArray)
+        # ---------------------------------------
+        print('Image Deconvolution Ends')
         Terminate(ComponentList)
         # ---------------------------------------
     except:
-        raise IOError('Exception triggered!!!')
-    # ---------------------------------------
+        raise IOError('Something went wrong. Exception triggered!!!')
+
+    print('Wrap up time')
     TimeElapsed = datetime.now() - StartTimer
     TimeStamp   = 'Time elapsed (hh:mm:ss.ms) {}\n'.format(TimeElapsed)
     print(TimeStamp)   
+    # ---------------------------------------
+    
