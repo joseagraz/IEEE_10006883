@@ -124,4 +124,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-Special thanks to mentor Robert S. Pozos PhD, for his help and support for the past 25 years
+Special thanks to mentor Robert S. Pozos PhD, for his support for the past 25 years
