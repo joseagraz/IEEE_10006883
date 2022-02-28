@@ -116,7 +116,7 @@ Explore provided [normalization example](./Normalization_Example) for a cohort o
 
 ## Authors
 
-![Authors](./support_files/authors.svg)
+![Authors](./support_files/authors.png)
 
 ## License
 
