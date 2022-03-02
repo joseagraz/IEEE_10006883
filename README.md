@@ -27,7 +27,7 @@ The aggregation of a whole slide image (WSI) cohort subset is representative of 
 Create a python environment and install packages listed in conda explicit [spec-file.txt](./support_files/spec-file.txt) file. See syntax below
 
 ```
-conda create --name Color_Normalization_Environment python=3.6.5 --file spec-file.txt
+conda create --name Color_Normalization_Environment python=3.7 --file spec-file.txt
 ```
 
 
