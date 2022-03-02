@@ -45,7 +45,7 @@ Figure 1. Image normalization work flow. 1) Compute all cohort images stain vect
 
 ## Getting started
 
-Explore provided [normalization example](./Normalization_Example) for a cohort of four images, see [Example.sh](./Normalization_Example/Example.sh) bash file for detailed execution steps
+Explore provided [normalization example](./Normalization_Example) for a cohort of four images, see [Four_Image_Cohort_Normalization_Example.sh](./Normalization_Example/Four_Image_Cohort_Normalization_Example.sh) bash file for detailed execution steps
 
 ### Work-flow python scripts
 
@@ -57,7 +57,7 @@ Explore provided [normalization example](./Normalization_Example) for a cohort o
    | --Label_Map_Image [-l]            | Image map of image of interest (png)                         |
    | --Gray_Level_To_Label_Legend [-g] | Gray level color legend (csv file)                           |
    | --Output_Dataframe_File [-o]      | Output Stain Vectors and Histogram pandas dataframe file name |
-   | --Excluding_Labels [-x]           | Small or dubious labels in the label map image to ignore (text) |
+   | --Excluding_Labels [-x]           | Small or dubious labels to ignore in the label map image (text) |
 
    #### Usage
 
@@ -107,8 +107,8 @@ Explore provided [normalization example](./Normalization_Example) for a cohort o
    ```
    >>> Normalize_Image.py
          --Image_To_Normalize        266290664.jpg
-         --Normalizing_Histogram     100ImageCohortHistograms.npy
-         --Normalizing_Stain_Vectors 100ImageCohortStainVectors.npy
+         --Normalizing_Histogram     120ImageCohortHistograms.npy
+         --Normalizing_Stain_Vectors 120ImageCohortStainVectors.npy
          --Output_Directory          Normalized_Images_Directory
    ```
    
@@ -124,4 +124,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-Special thanks to mentor Robert S. Pozos PhD, for his support for the past 25 years
+Special thanks to mentor Robert S. Pozos PhD for his support for the past 25 years

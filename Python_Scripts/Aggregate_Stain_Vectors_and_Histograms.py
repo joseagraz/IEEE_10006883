@@ -264,7 +264,11 @@ def ProcessStainVector(CohortFileList,StainName):
     print('{}: FileList:\n{}'.format(StainName,FileList))
     print('{}: Get First Dataframe Cohort List'.format(StainName))
     
-    DaskDataFrameArray = [dd.read_parquet(SingleFile,engine=MEMORY_DATA_ENGINE) for SingleFile in FileList]
+    try:
+        DaskDataFrameArray = [dd.read_parquet(SingleFile,engine=MEMORY_DATA_ENGINE) for SingleFile in FileList]
+    except:
+       raise IOError('Dask read parquet Exception triggered!!!')    
+       
     print('{}: Concatenate Dataframes'.format(StainName))
     DaskDataframe      = dd.concat(DaskDataFrameArray,ignore_index=True,axis = 0)  
     print('{}: Extract Stain Vectors'.format(StainName))
@@ -321,37 +325,38 @@ if __name__ == "__main__":
     print('Fetching Number of Bins from Dataframe Columns')
     DataframeDataBase       = pd.read_parquet(CohortHistogramFileList[FIRST_ITEM], engine=MEMORY_DATA_ENGINE)    
     BinSize                 = len(DataframeDataBase.index)+1
-    BinsLocations           = np.arange(BinSize-1)
-                       
+    BinsLocations           = np.arange(BinSize-1)                       
+    #-----------------------------------------------------------------                
+    CohortFileList          = random.sample(CohortHistogramFileList, k=int(InputArguments.Number_of_Images))
+    #-----------------------------------------------------------------                
+    StainName               = HEMATOXYLIN_STAIN_LABEL.lower()
+    print('{}: Calculating Histogram'.format(StainName))
     try:       
-        #-----------------------------------------------------------------                
-        CohortFileList          = random.sample(CohortHistogramFileList, k=int(InputArguments.Number_of_Images))
-               
-        StainName               = HEMATOXYLIN_STAIN_LABEL.lower()
-        print('{}: Calculating Histogram'.format(StainName))
         HematoxylinHistogram    = SumHistograms(CohortFileList, StainName,BinSize)
-                
-        print('{}: Calculating Stain Vectors'.format(StainName))
-        HematoxylinStainVectors = ProcessStainVector(CohortFileList,StainName)
-        
-        #-----------------------------------------------------------------                
-        StainName               = EOSIN_STAIN_LABEL.lower()
-        print('{}: Calculating Histogram'.format(StainName))
-        EosinHistogram          = SumHistograms(CohortFileList, StainName,BinSize)
-                
-        print('{}: Calculating Stain Vectors'.format(StainName))
-        EosinStainVectors       = ProcessStainVector(CohortFileList,StainName)        
-        
-        #-----------------------------------------------------------------                
-        HistogramData           = [[HematoxylinHistogram, BinsLocations],\
-                                   [EosinHistogram,       BinsLocations]]
-        StainVectorsData        = [HematoxylinStainVectors,EosinStainVectors]
-        
-        #-----------------------------------------------------------------
     except:
-       raise IOError('Exception triggered!!!')
-    finally:
+       raise IOError('Histograms Sum Exception triggered!!!')
+    #-----------------------------------------------------------------                
+    print('{}: Calculating Stain Vectors'.format(StainName))
+    HematoxylinStainVectors = ProcessStainVector(CohortFileList,StainName)
+    #-----------------------------------------------------------------                
+    StainName               = EOSIN_STAIN_LABEL.lower()
+    print('{}: Calculating Histogram'.format(StainName))
+    try:
+        EosinHistogram          = SumHistograms(CohortFileList, StainName,BinSize)
+    except:
+       raise IOError('Stain Vectors Sum Exception triggered!!!')          
+    #-----------------------------------------------------------------                       
+    print('{}: Calculating Stain Vectors'.format(StainName))
+    try:    
+        EosinStainVectors       = ProcessStainVector(CohortFileList,StainName)        
+    except:
+       raise IOError('Process Stain Vectors Exception triggered!!!')                  
+    #-----------------------------------------------------------------                
+    HistogramData           = [[HematoxylinHistogram, BinsLocations],\
+                               [EosinHistogram,       BinsLocations]]
+    StainVectorsData        = [HematoxylinStainVectors,EosinStainVectors]    
+    #-----------------------------------------------------------------
       
-       Terminate(ResultsDirectory,HistogramData,StainVectorsData)
+    Terminate(ResultsDirectory,HistogramData,StainVectorsData)
 
     print('Done')

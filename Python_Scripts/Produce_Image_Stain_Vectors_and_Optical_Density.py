@@ -42,7 +42,7 @@ __version__ = "0.0.1"
 HEMATOXYLIN_STAIN           = 0
 EOSIN_STAIN                 = 1
 OUTPUT_FILE_EXTENSION       = 'parquet'
-IMAGES_DATAFRAMES           = 'Images_DataFrames'
+STAIN_VECTORS_DATAFRAMES    = 'Images_Stain_Stats_DataFrames'
 HISTOGRAMS_DATAFRAMES       = 'Images_Histograms_DataFrames'
 HEMATOXYLIN_STAIN_LABEL     = 'Hematoxylin'
 EOSIN_STAIN_LABEL           = 'Eosin'
@@ -435,7 +435,7 @@ def Initialize():
     # ------------------------------------
     print('Create output directories')
     CreateDirectory(str(Path(InputArguments.Output_Dataframe_File).parent.parent/ SGE_DATA_LOGS))
-    CreateDirectory(str(Path(InputArguments.Output_Dataframe_File).parent/ IMAGES_DATAFRAMES))  
+    CreateDirectory(str(Path(InputArguments.Output_Dataframe_File).parent/ STAIN_VECTORS_DATAFRAMES))  
     CreateDirectory(str(Path(InputArguments.Output_Dataframe_File).parent/ HISTOGRAMS_DATAFRAMES))  
     # ------------------------------------
     print('Import Gray Level Legend CSV file')
@@ -444,7 +444,7 @@ def Initialize():
     DataFramePath   = pathlib.Path(str(Path(InputArguments.Output_Dataframe_File).parent / HISTOGRAMS_DATAFRAMES / Path(InputArguments.Output_Dataframe_File).name) + '.' + OUTPUT_FILE_EXTENSION)
     print('Test for File in Directory:{}'.format(DataFramePath))
     # ------------------------------------
-    DataFramePath   = pathlib.Path(str(Path(InputArguments.Output_Dataframe_File).parent / IMAGES_DATAFRAMES / Path(InputArguments.Output_Dataframe_File).name) + '.' + OUTPUT_FILE_EXTENSION)
+    DataFramePath   = pathlib.Path(str(Path(InputArguments.Output_Dataframe_File).parent / STAIN_VECTORS_DATAFRAMES / Path(InputArguments.Output_Dataframe_File).name) + '.' + OUTPUT_FILE_EXTENSION)
     print('Test for File in Directory:{}'.format(DataFramePath))
     # ------------------------------------
     print('Get image pairs')
@@ -918,7 +918,7 @@ def Terminate(ComponentList):
             DataBase.loc[(DataBase.Stain == Stain_Name) & (DataBase.Area > Area_Threshold),'Image_Max'               ] = Stain_Statistics['max'  ]
         # --------------------------------------------       
         print('Save dataframe to disk')      
-        DataFramePath             = str(Path(InputArguments.Output_Dataframe_File).parent / IMAGES_DATAFRAMES / Path(InputArguments.Output_Dataframe_File).name) + '.' + OUTPUT_FILE_EXTENSION          
+        DataFramePath             = str(Path(InputArguments.Output_Dataframe_File).parent / STAIN_VECTORS_DATAFRAMES / Path(InputArguments.Output_Dataframe_File).name) + '.' + OUTPUT_FILE_EXTENSION          
         print('Concatenate both stains dataframes')
         Filtered_Dataframe = pd.concat([DataBase[(DataBase.Stain == HEMATOXYLIN_STAIN_LABEL) & (DataBase.Area > Hematoxylin_Area_Threshold)],\
                                         DataBase[(DataBase.Stain == EOSIN_STAIN_LABEL)       & (DataBase.Area > Eosin_Area_Threshold)]])        
