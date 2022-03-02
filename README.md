@@ -120,7 +120,7 @@ Explore provided [normalization example](./Normalization_Example) for a cohort o
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This is a SBIA project covered by the following [license](https://www.med.upenn.edu/cbica/software-agreement.html)
 
 ## Acknowledgments
 
