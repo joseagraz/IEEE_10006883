@@ -312,7 +312,7 @@ def GetArguments():
     parser.add_argument('-e', '--Stain_Vector_Lambda',        required=False, default=0.01,  help='Stain Vector Lambda')
     parser.add_argument('-d', '--Density_Map_Lambda',         required=False, default=0.1,   help='Density Map Lambda')
     
-    parser.add_argument('-v', '--version', action='version', version= "%(prog)s (ver: "+__version__+")")   
+    parser.add_argument('-v', '--version', action='version', version= "%(prog)s (ver: "+__version__+")")  
     # ------------------------------------
     args = parser.parse_args()
 
@@ -428,8 +428,6 @@ def Initialize():
     print('Initialization Begins')
     SGE_DATA_LOGS                      = 'SgeDump'
     # ------------------------------------
-    print('Fetch input arguments')
-    InputArguments                     = GetArguments()
     print('Exclude invalid features')
     GreyLevelLabels                    = ExcludeFeatureLabels(InputArguments.Excluding_Labels)   
     # ------------------------------------
@@ -977,28 +975,27 @@ def Terminate(ComponentList):
         print('Empty Dataframe, File Will Not Be Saved')
         
 # ------------------------------------------------------------------------------------------------
-
+if __name__ == "__version__": 
+    print
 if __name__ == "__main__":
+    InputArguments                     = GetArguments()        
     # ---------------------------------------
     ComponentList = list()
     # ---------------------------------------
     StartTimer = datetime.now()
     TimeStamp = 'Start Time (hh:mm:ss.ms) {}'.format(StartTimer)
     print(TimeStamp)  
-    try:
-        # ---------------------------------------
-        print('Begin housekeeping')
-        SlideImageArray,\
-        LabelMapImageArray  = Initialize()   
-        # ---------------------------------------
-        print('Image Deconvolution Begins')
-        ComponentList       = ExecuteDeconvolution(SlideImageArray,LabelMapImageArray)
-        # ---------------------------------------
-        print('Image Deconvolution Ends')
-        Terminate(ComponentList)
-        # ---------------------------------------
-    except:
-        raise IOError('Something went wrong. Exception triggered!!!')
+    # ---------------------------------------
+    print('Begin housekeeping')
+    SlideImageArray,\
+    LabelMapImageArray  = Initialize()   
+    # ---------------------------------------
+    print('Image Deconvolution Begins')
+    ComponentList       = ExecuteDeconvolution(SlideImageArray,LabelMapImageArray)
+    # ---------------------------------------
+    print('Image Deconvolution Ends')
+    Terminate(ComponentList)
+    # ---------------------------------------
 
     print('Wrap up time')
     TimeElapsed = datetime.now() - StartTimer

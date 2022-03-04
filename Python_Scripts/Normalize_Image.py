@@ -494,8 +494,6 @@ if __name__ == "__main__":
     #------------------------------------------------------------------------------------------------
     NormalizedImage         = da.from_array([], chunks='200MiB') 
 
-    #InputArguments          = GetArguments()
-
     OutputFilePath          = Initialize()    
 
     ImageToNormalize,\
