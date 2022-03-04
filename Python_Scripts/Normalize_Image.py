@@ -483,7 +483,7 @@ def FindDensityMap(OpticalDensityImage,SlideStainVectors):
     return StainDensityMap.toarray().T
 #------------------------------------------------------------------------------------------------
 if __name__ == "__version__": 
-    print ("File1 is being run directly")
+    print
 if __name__ == "__main__":
 
     InputArguments          = GetArguments()
