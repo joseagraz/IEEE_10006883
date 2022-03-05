@@ -45,7 +45,7 @@ Figure 1. Image normalization work flow. 1) Compute all cohort images stain vect
 
 ## Getting started
 
-Explore provided [normalization example](./Normalization_Example) for a cohort of four images, see [Four_Image_Cohort_Normalization_Example.sh](./Normalization_Example/Four_Image_Cohort_Normalization_Example.sh) bash file for detailed execution of the 3 steps required for image normalization. For unit testing, see individual bash files for each [image dataframe generation](./Normalization_Example/Individual_Execution_Bash_Files/Produce_Dataframes), [aggregated stain vectors and histogram](./Normalization_Example/Individual_Execution_Bash_Files/Aggregate_Dataframes.sh), and [image normalization](./Normalization_Example/Individual_Execution_Bash_Files/Normalize_Image) 
+Explore provided [normalization example](./Normalization_Example) for a cohort of four images, see [Four_Image_Cohort_Normalization_Example.sh](./Normalization_Example/Four_Image_Cohort_Normalization_Example.sh) bash file for detailed execution of the 3 steps required for image normalization. For unit testing, see [excel file here](support_files/Normalization_Test_Case.xls)
 
 ### Work-flow python scripts
 
