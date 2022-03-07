@@ -31,12 +31,12 @@ conda create --name Color_Normalization_Environment python=3.7 --file spec-file.
 ```
 
 
-## Project roadmap
+## Workflow roadmap
 
 The project provides the following features:
 
-- Calculates the stain vectors and histogram for a given image
-- Aggregates the stain vectors and histogram for a given set of images
+- Calculates the stain vectors and histogram for a given image and holds data in Pandas dataframes
+- Aggregates the stain vectors and histogram for a given set of images and holds data in numpy arrays
 - Normalizes a given image using the aggregated stain vectors and histogram using [Vahadane's](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7460968) algorithm
 
 ![Normalization Work Flow](./support_files/Flow_GitHub.svg)
