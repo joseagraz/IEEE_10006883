@@ -12,7 +12,7 @@
 for Enviroment_Loop in {1..10..1}; do # CBICA Cluster may need more than one attempt to load enviroment
        echo "Interation_Number=${Enviroment_Loop}"
        echo "Loading conda python enviroment"
-       source activate ColorNormalization  
+       source activate Color_Normalization_Environment  
        if [ $? == 0 ]; then                                                                 
            echo "Enviroment Active"   
            # ------------------------------------------------------------------------------------------------                                                      
