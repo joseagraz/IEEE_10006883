@@ -17,10 +17,10 @@ for Enviroment_Loop in {1..10..1}; do # CBICA Cluster may need more than one att
            echo "Enviroment Active"   
            # ------------------------------------------------------------------------------------------------                                                      
            echo Aggregate stain vectors and histograms
-           python ../Python_Scripts/Aggregate_Stain_Vectors_and_Histograms.py\
-             --Histogram_Dataframe_Directory    Images_Histograms_DataFrames\
-             --Stain_Vector_Dataframe_Directory Images_Stain_Stats_DataFrames\
-             --Output_Directory                 Normalization_Parameters\
+           python Python_Scripts/Aggregate_Stain_Vectors_and_Histograms.py\
+             --Histogram_Dataframe_Directory    Normalization_Example/Images_Histograms_DataFrames\
+             --Stain_Vector_Dataframe_Directory Normalization_Example/Images_Stain_Stats_DataFrames\
+             --Output_Directory                 Normalization_Example/Normalization_Parameters\
              --Number_of_Images                 4
            # ------------------------------------------------------------------------------------------------
            break

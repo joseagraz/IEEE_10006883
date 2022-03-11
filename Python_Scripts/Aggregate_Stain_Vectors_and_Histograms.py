@@ -101,9 +101,9 @@ def Terminate(ResultsDirectory,HistogramData,StainVectorsData):
         np.save(str(Path(ResultsDirectory) / FileName), StainVectorsData) 
                     
         print('* Dataframe Files Available    : {}                   '.format(InputArguments.Number_of_Images))
-        print('* Histograms Directory Name    :\n\t{}                '.format(InputArguments.Histogram_Dataframe_Directory))
-        print('* Stain Vectors Directory Name :\n\t{}                '.format(InputArguments.Stain_Vector_Dataframe_Directory))
-        print('* Results Directory Name       :\n\t{}                '.format(ResultsDirectory))
+        print('* Histograms Directory Name    : {}                '.format(InputArguments.Histogram_Dataframe_Directory))
+        print('* Stain Vectors Directory Name : {}                '.format(InputArguments.Stain_Vector_Dataframe_Directory))
+        print('* Results Directory Name       : {}                '.format(ResultsDirectory))
         
         if len(CohortFileList) == 1:
             Source          = CohortFileList[0]
@@ -114,7 +114,6 @@ def Terminate(ResultsDirectory,HistogramData,StainVectorsData):
     else:
         print('Empty Histograms and/or Stain Vectors')
          
-    print('Done!')
 # ------------------------------------------------------------------------------------------------
 # Function Name: Creates a directory
 # Author: Jose L. Agraz, PhD
@@ -358,5 +357,5 @@ if __name__ == "__main__":
     #-----------------------------------------------------------------
       
     Terminate(ResultsDirectory,HistogramData,StainVectorsData)
-
-    print('Done')
+    print('****************************************')
+    print('Done!')

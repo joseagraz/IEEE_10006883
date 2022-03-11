@@ -17,11 +17,11 @@ for Enviroment_Loop in {1..10..1}; do # CBICA Cluster may need more than one att
            echo "Enviroment Active"   
            # ------------------------------------------------------------------------------------------------                                                      
            # Normalize image
-           python ../Python_Scripts/Normalize_Image.py\
-             --Image_To_Normalize         Images_and_Maps/Images/266290664.jpg\
-             --Normalizing_Histogram      Normalization_Parameters/4_Image_Cohort_Aggregated_Normalization_Parameters/4ImageCohortHistograms.npy\
-             --Normalizing_Stain_Vectors  Normalization_Parameters/4_Image_Cohort_Aggregated_Normalization_Parameters/4ImageCohortStainVectors.npy\
-             --Output_Directory           Images_and_Maps
+           python Python_Scripts/Normalize_Image.py\
+             --Image_To_Normalize         Normalization_Example/Images_and_Maps/Images/266290664.jpg\
+             --Normalizing_Histogram      Normalization_Example/Normalization_Parameters/4_Image_Cohort_Aggregated_Normalization_Parameters/4ImageCohortHistograms.npy\
+             --Normalizing_Stain_Vectors  Normalization_Example/Normalization_Parameters/4_Image_Cohort_Aggregated_Normalization_Parameters/4ImageCohortStainVectors.npy\
+             --Output_Directory           Normalization_Example/Images_and_Maps
            # ------------------------------------------------------------------------------------------------
            break
        fi

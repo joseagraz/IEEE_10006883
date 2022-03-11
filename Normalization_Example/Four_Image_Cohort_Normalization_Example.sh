@@ -31,29 +31,29 @@ for Enviroment_Loop in {1..10..1}; do # CBICA Cluster may need more than one att
            for i in ${!Image_Array[@]}; do           
                # ------------------------------------------------------------------------------------------------
                echo Generate pandas dataframes containing stain vectors and optical density for each cohort image 
-               python ../Python_Scripts/Produce_Image_Stain_Vectors_and_Optical_Density.py\
-                 --Slide_Image                Images_and_Maps/Images/${Image_Array[$i]}\
-                 --Label_Map_Image            Images_and_Maps/Image_Maps/${Image_Map_Array[$i]}\
-                 --Gray_Level_To_Label_Legend Csv_Files/LV_Gray_Level_to_Label.csv\
-                 --Output_Dataframe_File      ${Output_Dataframe_Name[$i]}\
+               python Python_Scripts/Produce_Image_Stain_Vectors_and_Optical_Density.py\
+                 --Slide_Image                Normalization_Example/Images_and_Maps/Images/${Image_Array[$i]}\
+                 --Label_Map_Image            Normalization_Example/Images_and_Maps/Image_Maps/${Image_Map_Array[$i]}\
+                 --Gray_Level_To_Label_Legend Normalization_Example/Csv_Files/LV_Gray_Level_to_Label.csv\
+                 --Output_Dataframe_File      Normalization_Example/${Output_Dataframe_Name[$i]}\
                  --Excluding_Labels           "${Excluding_Labels[$i]}"
            done
            # ------------------------------------------------------------------------------------------------
            echo Aggregate stain vectors and histograms
-           python ../Python_Scripts/Aggregate_Stain_Vectors_and_Histograms.py\
-             --Histogram_Dataframe_Directory    Images_Histograms_DataFrames\
-             --Stain_Vector_Dataframe_Directory Images_Stain_Stats_DataFrames\
-             --Output_Directory                 Normalization_Parameters\
+           python Python_Scripts/Aggregate_Stain_Vectors_and_Histograms.py\
+             --Histogram_Dataframe_Directory    Normalization_Example/Images_Histograms_DataFrames\
+             --Stain_Vector_Dataframe_Directory Normalization_Example/Images_Stain_Stats_DataFrames\
+             --Output_Directory                 Normalization_Example/Normalization_Parameters\
              --Number_of_Images                 ${#Image_Array[@]}
            #
            for i in ${!Image_Array[@]}; do
                # ------------------------------------------------------------------------------------------------
                echo Normalize image using aggregated parameters above
-               python ../Python_Scripts/Normalize_Image.py\
+               python Python_Scripts/Normalize_Image.py\
                  --Image_To_Normalize         Images_and_Maps/Images/${Image_Array[$i]}\
-                 --Normalizing_Histogram      Normalization_Parameters/${#Image_Array[@]}_Image_Cohort_Aggregated_Normalization_Parameters/${#Image_Array[@]}ImageCohortHistograms.npy\
-                 --Normalizing_Stain_Vectors  Normalization_Parameters/${#Image_Array[@]}_Image_Cohort_Aggregated_Normalization_Parameters/${#Image_Array[@]}ImageCohortStainVectors.npy\
-                 --Output_Directory           Images_and_Maps/Normalized_Images
+                 --Normalizing_Histogram      Normalization_Example/Normalization_Parameters/${#Image_Array[@]}_Image_Cohort_Aggregated_Normalization_Parameters/${#Image_Array[@]}ImageCohortHistograms.npy\
+                 --Normalizing_Stain_Vectors  Normalization_Example/Normalization_Parameters/${#Image_Array[@]}_Image_Cohort_Aggregated_Normalization_Parameters/${#Image_Array[@]}ImageCohortStainVectors.npy\
+                 --Output_Directory           Normalization_Example/Images_and_Maps/Normalized_Images
                # ------------------------------------------------------------------------------------------------
            done
            break                                                                            
