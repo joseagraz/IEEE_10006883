@@ -98,6 +98,7 @@ def Initialize():
 
     IMAGE_OUTPUT              = 'Normalized_Images'
     OUTPUT_IMAGE_POSTFIX      = '_Normalized'
+    FILE_EXTENSION            = '.png'
     InputImageName            = str()
     InputImageNameNoExtension = str()
     NewFileName               = str()
@@ -108,8 +109,9 @@ def Initialize():
 
     InputImageName            = Path(InputArguments.Image_To_Normalize).name
     InputImageNameNoExtension = Path(InputImageName).stem
-    OutPutFileExtension       = Path(InputImageName).suffix
-    NewFileName               = InputImageNameNoExtension + OUTPUT_IMAGE_POSTFIX + OutPutFileExtension
+    #OutPutFileExtension       = Path(InputImageName).suffix
+    #NewFileName               = InputImageNameNoExtension + OUTPUT_IMAGE_POSTFIX + OutPutFileExtension
+    NewFileName               = InputImageNameNoExtension + OUTPUT_IMAGE_POSTFIX + FILE_EXTENSION
 
     OutputFilePath            = str(Path(InputArguments.Output_Directory) / IMAGE_OUTPUT)
     CreateDirectory(OutputFilePath)
