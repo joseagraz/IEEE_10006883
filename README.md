@@ -1,4 +1,4 @@
-## Robust Image Population-based Stain Normalization: How Many Reference Images Are Enough to Normalize?
+## (Obsolete) Robust Image Population-based Stain Normalization: How Many Reference Images Are Enough to Normalize?
 
 ## Contents
 
